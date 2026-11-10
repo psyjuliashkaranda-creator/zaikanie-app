@@ -305,6 +305,12 @@ button:disabled{opacity:.6}
 .psec{display:grid;grid-template-columns:1fr 90px 26px;align-items:center;gap:8px;font-size:13px;margin:5px 0}
 .psec i{display:block;height:8px;border-radius:8px;background:var(--accent)}
 .psec b{text-align:right;color:var(--muted);font-size:12px}
+.lcons{display:grid;gap:4px;margin:6px 0 2px}
+.accsum{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.accsum div{background:var(--surface);border-radius:12px;padding:8px 4px;text-align:center}
+.accsum b{display:block;font-family:'Cormorant',Georgia,serif;font-size:22px;color:var(--deep);line-height:1.1}
+.accsum span{font-size:10.5px;color:var(--muted)}
+.atags .tin{background:#E3F2EA;color:#2F6B47}
 </style>
 </head>
 <body>
@@ -366,11 +372,11 @@ function loginView(){
    ${loginMode==='up'?`<label for="ln">Имя ребёнка</label><input class="inp" id="ln" autocomplete="given-name" placeholder="Например, Маша">`:''}
    <label for="le">Почта</label><input class="inp" id="le" type="email" autocomplete="email" placeholder="mail@example.com">
    <label for="lp">Пароль</label><input class="inp" id="lp" type="password" autocomplete="${loginMode==='up'?'new-password':'current-password'}" placeholder="${loginMode==='up'?'Придумай пароль, минимум 6 символов':'Твой пароль'}">
-   ${loginMode==='up'?`<label class="cons"><input type="checkbox" id="lcons"> <span>Принимаю условия <a href="https://www.julia-shkaranda.ru/docs/1.-Оферта-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">оферты</a>, ознакомлен(а) с <a href="https://www.julia-shkaranda.ru/docs/2.-Политика-ОПД-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">политикой конфиденциальности</a> и даю <a href="https://www.julia-shkaranda.ru/docs/3_Согласие_на_ОПД_сайт_ИП_ШКАРАНДА_Ю-_2_.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на обработку персональных данных</a></span></label>`:''}<div class="err" id="lerr"></div>
+   ${loginMode==='up'?`<label class="cons"><input type="checkbox" id="lcons"> <span>Принимаю условия <a href="https://app.julia-shkaranda.ru/docs/offer.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">оферты</a>, ознакомлен(а) с <a href="https://app.julia-shkaranda.ru/docs/policy.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">политикой конфиденциальности</a> и даю <a href="https://app.julia-shkaranda.ru/docs/consent.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на обработку персональных данных</a></span></label>`:''}<div class="err" id="lerr"></div>
    <button class="btn" type="submit">${loginMode==='up'?'Создать кабинет':'Войти'}</button>
   </form>
   <button class="btn ghost" data-skip style="margin-top:10px">Пропустить, это тест</button>
-  <p class="legal">Это демо-версия: аккаунт пока сохраняется только на этом устройстве. <a href="https://www.julia-shkaranda.ru/docs/2.-Политика-ОПД-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Политика конфиденциальности</a></p></div>`;
+  <p class="legal">Это демо-версия: аккаунт пока сохраняется только на этом устройстве. <a href="https://app.julia-shkaranda.ru/docs/policy.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Политика конфиденциальности</a></p></div>`;
 }
 
 function homeView(){
@@ -454,7 +460,7 @@ function bookSheet(kind){
   const c=CONSULT[kind];
   const ov=document.createElement('div'); ov.className='ov';
   ov.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-label="Запись"><div style="text-align:center;font-size:40px">${c.e}</div><h2>${c.n}</h2><p class="muted" style="margin-bottom:12px">Заполните коротко, и заявка уйдёт Юлии. Она напишет, чтобы договориться о времени.</p>
-  <div class="fl"><input class="inp" id="bk_name" placeholder="Имя ребёнка" value="${esc(S.user&&S.user.name&&S.user.email!=='тестовый режим'?S.user.name:'')}"><input class="inp" id="bk_age" placeholder="Возраст" inputmode="numeric"><input class="inp" id="bk_contact" placeholder="Телефон или ник в Telegram / MAX"><input class="inp" id="bk_time" placeholder="Когда удобно (дни, время)"><textarea class="inp" id="bk_note" rows="3" placeholder="Что беспокоит (по желанию)" style="resize:none"></textarea><label class="cons"><input type="checkbox" id="bk_cons"> <span>Даю <a href="https://www.julia-shkaranda.ru/docs/3_Согласие_на_ОПД_сайт_ИП_ШКАРАНДА_Ю-_2_.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на обработку персональных данных</a> и ознакомлен(а) с <a href="https://www.julia-shkaranda.ru/docs/2.-Политика-ОПД-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">политикой конфиденциальности</a></span></label><div class="err" id="bk_err"></div></div>
+  <div class="fl"><input class="inp" id="bk_name" placeholder="Имя ребёнка" value="${esc(S.user&&S.user.name&&S.user.email!=='тестовый режим'?S.user.name:'')}"><input class="inp" id="bk_age" placeholder="Возраст" inputmode="numeric"><input class="inp" id="bk_contact" placeholder="Телефон или ник в Telegram / MAX"><input class="inp" id="bk_time" placeholder="Когда удобно (дни, время)"><textarea class="inp" id="bk_note" rows="3" placeholder="Что беспокоит (по желанию)" style="resize:none"></textarea><label class="cons"><input type="checkbox" id="bk_cons"> <span>Даю <a href="https://app.julia-shkaranda.ru/docs/consent.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на обработку персональных данных</a> — моих и моего ребёнка как его законный представитель</span></label><label class="cons"><input type="checkbox" id="bk_pol"> <span>Ознакомлен(а) с <a href="https://app.julia-shkaranda.ru/docs/policy.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">политикой обработки персональных данных</a></span></label><label class="cons"><input type="checkbox" id="bk_mail"> <span>Хочу получать полезные материалы и новости (необязательно) — <a href="https://app.julia-shkaranda.ru/docs/mailing.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на рассылку</a></span></label><div class="err" id="bk_err"></div></div>
   <button class="btn" id="bk_send">Отправить заявку</button><button class="btn ghost" data-close style="margin-top:8px">Отмена</button></div>`;
   document.body.appendChild(ov);
   ov.addEventListener('click',async e=>{
@@ -477,7 +483,7 @@ function meView(){
   <div class="card sec"><h2>Оформление</h2><div class="row"><div class="tx"><b>Тёмная тема</b><span class="muted">Тёмно-фиолетовая, бережёт глаза вечером</span></div><button class="sw" role="switch" aria-checked="false" data-theme-sw aria-label="Тёмная тема"></button></div></div>
   <div class="card sec"><h2>Звук в приложении</h2>${sw('msg','Звук новых сообщений','Когда приложение открыто')}</div>
   <div class="card sec"><h2>Мой прогресс</h2><p class="muted">Дней с занятиями: <b style="color:var(--deep)">${S.active.length}</b></p><p class="muted">Записей настроения: <b style="color:var(--deep)">${Object.keys(S.mood).length}</b></p></div>
-  <button class="btn ghost sec" id="logout">Выйти из кабинета</button>${remindCard()}${pushCard()}${ownerCard()}<div class="card sec"><h2>Документы</h2><div class="docs"><a href="https://www.julia-shkaranda.ru/docs/1.-Оферта-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Договор-оферта</a><a href="https://www.julia-shkaranda.ru/docs/2.-Политика-ОПД-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Политика конфиденциальности</a><a href="https://www.julia-shkaranda.ru/docs/3_Согласие_на_ОПД_сайт_ИП_ШКАРАНДА_Ю-_2_.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Согласие на обработку персональных данных</a></div></div><img class="melogo" src="${IMG.logo}" alt="Заикание преодолимо">`;
+  <button class="btn ghost sec" id="logout">Выйти из кабинета</button>${remindCard()}${pushCard()}${ownerCard()}<div class="card sec"><h2>Документы</h2><div class="docs"><a href="https://app.julia-shkaranda.ru/docs/offer.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Договор-оферта</a><a href="https://app.julia-shkaranda.ru/docs/policy.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Политика обработки персональных данных</a><a href="https://app.julia-shkaranda.ru/docs/consent.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Согласие на обработку персональных данных</a><a href="https://app.julia-shkaranda.ru/docs/mailing.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Согласие на рассылку</a><a href="https://app.julia-shkaranda.ru/docs/reviews.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Согласие на публикацию отзывов</a></div><p class="muted" style="font-size:12px;margin-top:10px">Отозвать согласие или удалить данные: напишите на iulia.shkaranda@yandex.ru</p></div><img class="melogo" src="${IMG.logo}" alt="Заикание преодолимо">`;
 }
 
 /* ---------- render ---------- */
@@ -585,7 +591,7 @@ async function demoCall(a,d){
   if(a==='dmReply'){ (DEMO.dm[d.tid]=DEMO.dm[d.tid]||[]).push({id:id(),date:now,role:'admin',name:'Юлия Шкаранда',text:d.text||'',audio:fid(d.audio),photo:fid(d.photo)}); demoSave(); return {ok:true}; }
   DEMO.acc=DEMO.acc||[];
   if(a==='userLogin'){ const ac=DEMO.acc.find(x=>x.login===String(d.login).toLowerCase()); if(ac){ if(ac.pass!==d.password) throw new Error('Неверный логин или пароль'); if(ac.status==='заблокирован') throw new Error('Доступ приостановлен. Напишите Юлии.'); return {ok:true,token:'demo-u',name:ac.name,login:ac.login}; } return {ok:true,token:'',name:d.login,login:d.login}; }
-  DEMO.course=DEMO.course||[{date:'2026-10-31',src:'course',login:'anna.ivanova@mail.ru',pass:'luna-7731',name:'Анна Иванова',until:'2027-03-01',club:true,status:'активен',email:'anna.ivanova@mail.ru',note:'Курс «Речь без заикания»'},{date:'2026-10-15',src:'course',login:'olga.p@gmail.com',pass:'sova-1209',name:'Ольга Петрова',until:'2027-04-15',club:true,status:'активен',email:'olga.p@gmail.com',note:'Курс «Речь без заикания»'}];
+  DEMO.course=DEMO.course||[{inApp:true,lastSeen:new Date(Date.now()-864e5).toISOString(),date:'2026-10-31',src:'course',login:'anna.ivanova@mail.ru',pass:'luna-7731',name:'Анна Иванова',until:'2027-03-01',club:true,status:'активен',email:'anna.ivanova@mail.ru',note:'Курс «Речь без заикания»'},{date:'2026-10-15',src:'course',login:'olga.p@gmail.com',pass:'sova-1209',name:'Ольга Петрова',until:'2027-04-15',club:true,status:'активен',email:'olga.p@gmail.com',note:'Курс «Речь без заикания»'}];
   if(a==='accList') return {ok:true,list:DEMO.acc.slice().reverse().map(x=>Object.assign({src:'own',date:(x.created||'').slice(0,10)},x)).concat(DEMO.course)};
   if(a==='mailSend'){ const all=DEMO.acc.map(x=>Object.assign({src:'own'},x)).concat(DEMO.course).filter(x=>d.logins.includes(x.login)); return {ok:true,sent:all.filter(x=>x.email).length,noMail:all.filter(x=>!x.email).map(x=>x.name),failed:[]}; }
   if(a==='accCreate'){ if(!/^[a-z0-9._@-]{3,60}$/.test(d.login)) throw new Error('Логин: латиница, цифры, точка или дефис, от 3 символов'); if(String(d.password).length<6) throw new Error('Пароль от 6 символов'); if(!d.name) throw new Error('Укажите имя'); if(DEMO.acc.some(x=>x.login===d.login)) throw new Error('Такой логин уже есть'); DEMO.acc.push({login:d.login,pass:d.password,name:d.name,until:d.until,club:!!d.club,status:'активен',created:now,note:d.note||'',email:d.email||''}); demoSave(); return {ok:true}; }
@@ -687,17 +693,17 @@ bookSheet=function(kind){
   const c=CONSULT[kind]; const ov=document.createElement('div'); ov.className='ov';
   ov.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"><div style="text-align:center;font-size:40px">${c.e}</div><h2>${c.n}</h2><p class="muted" style="margin-bottom:12px">Заполните коротко, и заявка придёт Юлии. Она свяжется с вами, чтобы договориться о времени и оплате.</p>
   <div class="fl"><input class="inp" id="bk_name" placeholder="Имя ребёнка" value="${esc(S.user&&S.user.email!=='тестовый режим'?S.user.name:'')}"><input class="inp" id="bk_age" placeholder="Возраст" inputmode="numeric"><input class="inp" id="bk_contact" placeholder="Телефон или ник в Telegram / MAX"><input class="inp" id="bk_time" placeholder="Когда удобно (дни, время)"><textarea class="inp" id="bk_note" rows="3" placeholder="Что беспокоит (по желанию)" style="resize:none"></textarea>
-  <label class="cons"><input type="checkbox" id="bk_cons"> <span>Даю <a href="https://www.julia-shkaranda.ru/docs/3_Согласие_на_ОПД_сайт_ИП_ШКАРАНДА_Ю-_2_.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на обработку персональных данных</a> и ознакомлен(а) с <a href="https://www.julia-shkaranda.ru/docs/2.-Политика-ОПД-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">политикой конфиденциальности</a></span></label><div class="err" id="bk_err"></div></div>
+  <label class="cons"><input type="checkbox" id="bk_cons"> <span>Даю <a href="https://app.julia-shkaranda.ru/docs/consent.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на обработку персональных данных</a> — моих и моего ребёнка как его законный представитель</span></label><label class="cons"><input type="checkbox" id="bk_pol"> <span>Ознакомлен(а) с <a href="https://app.julia-shkaranda.ru/docs/policy.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">политикой обработки персональных данных</a></span></label><label class="cons"><input type="checkbox" id="bk_mail"> <span>Хочу получать полезные материалы и новости (необязательно) — <a href="https://app.julia-shkaranda.ru/docs/mailing.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на рассылку</a></span></label><div class="err" id="bk_err"></div></div>
   <button class="btn" id="bk_send">Отправить заявку</button><button class="btn ghost" data-close style="margin-top:8px">Отмена</button></div>`;
   document.body.appendChild(ov);
   ov.addEventListener('click',async e=>{
     if(e.target===ov||e.target.closest('[data-close]')){ ov.remove(); return; }
     if(e.target.id!=='bk_send') return;
     const v=id=>ov.querySelector('#'+id).value.trim(), err=ov.querySelector('#bk_err');
-    if(!ov.querySelector('#bk_cons').checked){ err.textContent='Поставьте галочку согласия на обработку данных.'; return; }
+    if(!ov.querySelector('#bk_cons').checked||!ov.querySelector('#bk_pol').checked){ err.textContent='Поставьте две обязательные галочки: согласие и политика.'; return; }
     if(!v('bk_name')||!v('bk_contact')){ err.textContent='Напишите имя ребёнка и как с вами связаться.'; return; }
     e.target.disabled=true; e.target.textContent='Отправляем…';
-    try{ await call('request',{type:kind,name:v('bk_name'),age:v('bk_age'),contact:v('bk_contact'),time:v('bk_time'),note:v('bk_note')});
+    try{ await call('request',{type:kind,name:v('bk_name'),age:v('bk_age'),contact:v('bk_contact'),time:v('bk_time'),note:v('bk_note'),mailing:ov.querySelector('#bk_mail').checked});
       ov.querySelector('.sheet').innerHTML=`<div style="text-align:center;font-size:44px">💌</div><h2>Заявка отправлена!</h2><p class="muted" style="margin:8px 0 14px;text-align:center">Юлия получила её и свяжется с вами в ближайшее время. Если хотите быстрее, напишите ей сами:</p><a class="btn" href="${URLS.max}" target="_blank" rel="noopener external" style="text-decoration:none">Написать в MAX</a><a class="btn ghost" href="${URLS.tg}" target="_blank" rel="noopener external" style="text-decoration:none;margin-top:8px">Написать в Telegram</a><button class="btn ghost" data-close style="margin-top:8px">Готово</button>`;
     }catch(x){ err.textContent=x.message; e.target.disabled=false; e.target.textContent='Отправить заявку'; }
   });
@@ -831,17 +837,20 @@ loginView=function(){
   <h1>Личный кабинет</h1><div class="kids"><img src="${IMG.girl_wave}" alt=""><img src="${IMG.boy_wave}" alt=""></div><p class="sub">Упражнения, дневник, сказки и чат с Юлией в одном месте</p>
   <form class="fl" id="lf" novalidate><label for="le">Логин или почта</label><input class="inp" id="le" autocapitalize="off" autocomplete="username" placeholder="Логин или почта">
   <label for="lp">Пароль</label><input class="inp" id="lp" type="password" autocomplete="current-password" placeholder="Пароль">
+  ${(()=>{ try{ return localStorage.getItem('yulia-consent'); }catch(e){ return null; } })()?'':`<div class="lcons"><label class="cons"><input type="checkbox" id="lc1"> <span>Принимаю условия <a href="https://app.julia-shkaranda.ru/docs/offer.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">договора-оферты</a></span></label><label class="cons"><input type="checkbox" id="lc2"> <span>Ознакомлен(а) с <a href="https://app.julia-shkaranda.ru/docs/policy.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">политикой обработки персональных данных</a></span></label><label class="cons"><input type="checkbox" id="lc3"> <span>Даю <a href="https://app.julia-shkaranda.ru/docs/consent.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">согласие на обработку персональных данных</a> — моих и моего ребёнка как его законный представитель</span></label></div>`}
   <div class="err" id="lerr"></div><button class="btn" type="submit">Войти</button></form>
   <p class="sub" style="margin-top:14px">Подходят данные от курса «Речь без заикания» (пришли на почту после покупки). Войти нужно один раз, дальше приложение вас запомнит.</p>
   <button class="btn ghost" data-book="school">Записаться на консультацию</button>
   ${API?'':'<button class="btn ghost" data-skip style="margin-top:10px">Пропустить, это тест</button><p class="legal">Демо-режим: подойдёт любой логин и пароль или созданные Юлией.</p>'}
-  <p class="legal"><a href="https://www.julia-shkaranda.ru/docs/2.-Политика-ОПД-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Политика конфиденциальности</a></p></div>`;
+  <p class="legal"><a href="https://app.julia-shkaranda.ru/docs/policy.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Политика конфиденциальности</a></p></div>`;
 };
 bindLogin=function(){
   $('#lf').addEventListener('submit',async e=>{ e.preventDefault();
     const l=$('#le').value.trim(), p=$('#lp').value.trim(), err=$('#lerr'); if(!l||!p){ err.textContent='Введите логин и пароль'; return; }
     if(l.toLowerCase()==='yulia'){ try{ const j=await call('adminLogin',{login:l,password:p}); S.adminToken=j.token; S.user={name:'Юлия Шкаранда',email:'yulia'}; save(); pushRelogin(); await adminPoll(true); setTab('admin'); toast('Здравствуйте, Юлия! 💜',IMG.yulia); }catch(x){ err.textContent=x.message; } return; }
-    try{ const j=await call('userLogin',{login:l,password:p}); S.user={name:j.name,email:l.toLowerCase()}; S.userToken=j.token||''; S.access={course:!!j.course,club:!!j.club,until:j.until||''}; save(); pushRelogin(); tab='home'; render(); toast('Добро пожаловать, '+j.name+'!',IMG.c_happy); dmRefresh(true); }
+    const cb=['lc1','lc2','lc3'].map(i=>document.getElementById(i)).filter(Boolean);
+    if(cb.length&&!cb.every(x=>x.checked)){ err.textContent='Поставьте все три галочки — это нужно один раз.'; return; }
+    try{ const j=await call('userLogin',{login:l,password:p,consent:cb.length?'v2026-11':''}); if(cb.length) try{ localStorage.setItem('yulia-consent',new Date().toISOString()); }catch(x){} S.user={name:j.name,email:l.toLowerCase()}; S.userToken=j.token||''; S.access={course:!!j.course,club:!!j.club,until:j.until||''}; save(); pushRelogin(); tab='home'; render(); toast('Добро пожаловать, '+j.name+'!',IMG.c_happy); dmRefresh(true); }
     catch(x){ err.textContent=x.message; }
   });
 };
@@ -1137,6 +1146,30 @@ async function progSheet(login){
    <button class="btn" data-close style="margin-top:14px">Закрыть</button>`;
 }
 document.addEventListener('click',e=>{ const b=e.target.closest('[data-aprog]'); if(b){ e.stopPropagation(); progSheet(b.dataset.aprog); } },true);
+
+/* ---- кто вошёл в приложение и какие доступы ---- */
+ADM.inapp='all';
+const _accVisible=accVisible;
+accVisible=function(){ const v=_accVisible(); return ADM.inapp==='in'?v.filter(a=>a.inApp):ADM.inapp==='out'?v.filter(a=>!a.inApp):v; };
+const _accHTML2=accHTML;
+accHTML=function(){
+  let h=_accHTML2(); const all=ADM.acc, nIn=all.filter(a=>a.inApp).length;
+  const box=`<div class="accsum"><div><b>${nIn}</b><span>вошли в приложение</span></div><div><b>${all.length-nIn}</b><span>ещё не входили</span></div><div><b>${all.filter(a=>a.club&&a.status!=='заблокирован').length}</b><span>с доступом в клуб</span></div></div>
+   <div class="chips2" style="margin-top:8px"><button data-inapp="all" aria-pressed="${ADM.inapp==='all'}">Все</button><button data-inapp="in" aria-pressed="${ADM.inapp==='in'}">📱 Вошли</button><button data-inapp="out" aria-pressed="${ADM.inapp==='out'}">Не входили</button></div>`;
+  return h.replace('<div class="abar">',box+'<div class="abar">');
+};
+const _accRow2=accRow;
+accRow=function(a){
+  let h=_accRow2(a);
+  const exp=a.until&&new Date(a.until+'T23:59')<new Date(), blocked=a.status==='заблокирован';
+  const acc=[`<i class="${a.inApp?'tin':'tn'}">${a.inApp?'📱 в приложении'+(a.lastSeen?' · '+agoTxt(a.lastSeen):''):'📱 не входил'}</i>`,
+    a.src==='course'?`<i class="${exp||blocked?'tn':'tc'}">🎓 курс${a.until?' до '+new Date(a.until+'T12:00').toLocaleDateString('ru-RU',{day:'numeric',month:'short'}):''}</i>`:'',
+    `<i class="${a.club&&!blocked&&!exp?'tk':'tn'}">💜 клуб ${a.club&&!blocked&&!exp?'есть':'нет'}</i>`].join('');
+  h=h.replace(/<i class="tp">[\s\S]*?<\/i>|<i class="tn">ещё не занимался<\/i>/,'');
+  h=h.replace(/<i class="(tc|to)">(курс|клиент)<\/i>/,m=>m+acc).replace(/<i class="tk">клуб<\/i>/,'');
+  return h;
+};
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-inapp]'); if(b){ ADM.inapp=b.dataset.inapp; render(); } });
 
 setTimeout(()=>{ dmRefresh(); adminPoll(true); },800);
 render();
