@@ -285,6 +285,26 @@ button:disabled{opacity:.6}
 .vp-tr{border:0;background:transparent;color:var(--accent);font-weight:700;font-size:12px;padding:2px 0;display:block}
 .vp-text{font-size:13.5px;line-height:1.5;background:var(--hl);border-radius:10px;padding:8px 10px;margin:4px 0;white-space:pre-wrap;color:var(--ink)}
 .vp-text:empty{display:none}
+.atags .tp{background:#E3F2EA;color:#2F6B47}.atags .tn{background:var(--surface);color:var(--muted)}
+.pstat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.pstat div{background:var(--surface);border-radius:14px;padding:10px 6px;text-align:center}
+.pstat b{display:block;font-family:'Cormorant',Georgia,serif;font-size:24px;color:var(--deep);line-height:1.1}
+.pstat span{font-size:11px;color:var(--muted)}
+.ph{font-size:13px;font-weight:800;color:var(--deep);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.pstrip{display:grid;grid-template-columns:repeat(14,1fr);gap:3px}
+.pd{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;color:var(--muted)}
+.pd i{width:100%;aspect-ratio:1;border-radius:6px;background:var(--surface)}
+.pd.on i{background:linear-gradient(135deg,#9ED9B0,#6BBF8A)}
+.pmood{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.pmood div{display:flex;flex-direction:column;align-items:center;gap:2px;flex:none}
+.pmood img{width:40px;height:40px;object-fit:contain}
+.pmood small{font-size:10.5px;color:var(--muted)}
+.ptest{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.ptest small{display:block;font-size:11px;color:var(--muted)}
+.ptest b{font-family:'Cormorant',Georgia,serif;font-size:22px;color:var(--deep)}.ptest b small{display:inline;font-size:12px}
+.psec{display:grid;grid-template-columns:1fr 90px 26px;align-items:center;gap:8px;font-size:13px;margin:5px 0}
+.psec i{display:block;height:8px;border-radius:8px;background:var(--accent)}
+.psec b{text-align:right;color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
@@ -457,7 +477,7 @@ function meView(){
   <div class="card sec"><h2>Оформление</h2><div class="row"><div class="tx"><b>Тёмная тема</b><span class="muted">Тёмно-фиолетовая, бережёт глаза вечером</span></div><button class="sw" role="switch" aria-checked="false" data-theme-sw aria-label="Тёмная тема"></button></div></div>
   <div class="card sec"><h2>Звук в приложении</h2>${sw('msg','Звук новых сообщений','Когда приложение открыто')}</div>
   <div class="card sec"><h2>Мой прогресс</h2><p class="muted">Дней с занятиями: <b style="color:var(--deep)">${S.active.length}</b></p><p class="muted">Записей настроения: <b style="color:var(--deep)">${Object.keys(S.mood).length}</b></p></div>
-  <button class="btn ghost sec" id="logout">Выйти из кабинета</button>${pushCard()}${ownerCard()}<div class="card sec"><h2>Документы</h2><div class="docs"><a href="https://www.julia-shkaranda.ru/docs/1.-Оферта-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Договор-оферта</a><a href="https://www.julia-shkaranda.ru/docs/2.-Политика-ОПД-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Политика конфиденциальности</a><a href="https://www.julia-shkaranda.ru/docs/3_Согласие_на_ОПД_сайт_ИП_ШКАРАНДА_Ю-_2_.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Согласие на обработку персональных данных</a></div></div><img class="melogo" src="${IMG.logo}" alt="Заикание преодолимо">`;
+  <button class="btn ghost sec" id="logout">Выйти из кабинета</button>${remindCard()}${pushCard()}${ownerCard()}<div class="card sec"><h2>Документы</h2><div class="docs"><a href="https://www.julia-shkaranda.ru/docs/1.-Оферта-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Договор-оферта</a><a href="https://www.julia-shkaranda.ru/docs/2.-Политика-ОПД-ИП-ШКАРАНДА-Ю.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Политика конфиденциальности</a><a href="https://www.julia-shkaranda.ru/docs/3_Согласие_на_ОПД_сайт_ИП_ШКАРАНДА_Ю-_2_.pdf" target="_blank" rel="noopener external" style="color:inherit;text-decoration:underline">Согласие на обработку персональных данных</a></div></div><img class="melogo" src="${IMG.logo}" alt="Заикание преодолимо">`;
 }
 
 /* ---------- render ---------- */
@@ -523,7 +543,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.skip!==undefined){S.user={name:'Маша',email:'тестовый режим'}; save(); tab='home'; render(); return;}
   if(t.dataset.lm){loginMode=t.dataset.lm; render(); return;}
   if(t.dataset.tab){setTab(t.dataset.tab); return;}
-  if(t.dataset.mood){const d=today(),a=(S.mood[d]||[]).slice(),k=t.dataset.mood,i=a.indexOf(k); i<0?a.push(k):a.splice(i,1); S.mood[d]=a; markActive(); save(); document.querySelectorAll('[data-mood]').forEach(b=>b.setAttribute('aria-pressed',a.includes(b.dataset.mood))); const ms=document.getElementById('moodsum'); if(ms) ms.textContent=a.length?'Сегодня: '+MOODS.filter(m=>a.includes(m[0])).map(m=>m[1].toLowerCase()).join(', '):'Нажми на облачко, которое похоже на тебя'; if(i<0) toast('Записали твоё настроение',IMG['c_'+k]); return;}
+  if(t.dataset.mood){const d=today(),a=(S.mood[d]||[]).slice(),k=t.dataset.mood,i=a.indexOf(k); i<0?a.push(k):a.splice(i,1); S.mood[d]=a; markActive(); save(); if(window.ytrack&&a.length) ytrack('mood','Настроение',a.join(',')); document.querySelectorAll('[data-mood]').forEach(b=>b.setAttribute('aria-pressed',a.includes(b.dataset.mood))); const ms=document.getElementById('moodsum'); if(ms) ms.textContent=a.length?'Сегодня: '+MOODS.filter(m=>a.includes(m[0])).map(m=>m[1].toLowerCase()).join(', '):'Нажми на облачко, которое похоже на тебя'; if(i<0) toast('Записали твоё настроение',IMG['c_'+k]); return;}
   if(t.dataset.practice!==undefined){markActive(); return;}
   if(t.dataset.soon){toast('Скоро появится!',IMG.c_wait); return;}
   if(t.dataset.buy){gate(t.dataset.buy,t.dataset.url); return;}
@@ -571,6 +591,10 @@ async function demoCall(a,d){
   if(a==='accCreate'){ if(!/^[a-z0-9._@-]{3,60}$/.test(d.login)) throw new Error('Логин: латиница, цифры, точка или дефис, от 3 символов'); if(String(d.password).length<6) throw new Error('Пароль от 6 символов'); if(!d.name) throw new Error('Укажите имя'); if(DEMO.acc.some(x=>x.login===d.login)) throw new Error('Такой логин уже есть'); DEMO.acc.push({login:d.login,pass:d.password,name:d.name,until:d.until,club:!!d.club,status:'активен',created:now,note:d.note||'',email:d.email||''}); demoSave(); return {ok:true}; }
   if(a==='accUpdate'){ const ac=DEMO.acc.find(x=>x.login===d.login)||DEMO.course.find(x=>x.login===d.login); if(d.password) ac.pass=d.password; if(d.until!==undefined) ac.until=d.until; if(d.club!==undefined) ac.club=d.club; if(d.status) ac.status=d.status; demoSave(); return {ok:true}; }
   if(a==='accDelete'){ DEMO.acc=DEMO.acc.filter(x=>x.login!==d.login); demoSave(); return {ok:true}; }
+  if(a==='remindGet') return {ok:true,on:!!(DEMO.rem&&DEMO.rem.on),hour:(DEMO.rem&&DEMO.rem.hour)||18};
+  if(a==='remindSet'){ DEMO.rem={on:d.on,hour:d.hour}; demoSave(); return {ok:true}; }
+  if(a==='progressList') return {ok:true,map:{'u:anna.ivanova@mail.ru':{last:new Date(Date.now()-864e5).toISOString(),days7:4,days30:11,mood:'calm',test:''}}};
+  if(a==='progress'){ if(d.id!=='u:anna.ivanova@mail.ru') return {ok:true,events:[]}; const ev=[],secs=['Дыхание','Речевые упражнения','Игры','Сказки и мультики','Зарядка для язычка','Дневник'],mo=['calm','happy','worry','calm','tired','happy']; for(let i=13;i>=1;i--){ if(i%3===2) continue; const t=new Date(Date.now()-i*864e5).toISOString(); ev.push({t,type:'visit',sec:secs[i%secs.length],val:secs[i%secs.length]==='Дневник'?'Сделано 6 из 10':''}); if(i%2) ev.push({t,type:'mood',sec:'Настроение',val:mo[i%mo.length]}); } ev.push({t:new Date(Date.now()-10*864e5).toISOString(),type:'test',sec:'Как я справляюсь с волнением',val:'18'}); ev.push({t:new Date(Date.now()-2*864e5).toISOString(),type:'test',sec:'Как я справляюсь с волнением',val:'12'}); ev.sort((x,y)=>x.t.localeCompare(y.t)); return {ok:true,events:ev}; }
   if(a==='transcribe') return {ok:true,text:'Демо-режим: здесь появится текст голосового сообщения. После подключения расшифровки на сервере текст будет настоящим.'};
   if(a==='config') return {ok:true,cfg:DEMO.cfg||null};
   if(a==='configSave'){ DEMO.cfg=d.cfg; demoSave(); return {ok:true}; }
@@ -1058,6 +1082,62 @@ document.addEventListener('click',async e=>{
 document.addEventListener('input',e=>{ if(!e.target.classList||!e.target.classList.contains('vp-bar')) return; const box=e.target.closest('.vp'); const a=box._a; e.target.style.setProperty('--p',(e.target.value/10)+'%');
   if(a&&isFinite(a.duration)&&a.duration) a.currentTime=e.target.value/1000*a.duration; else vpLoad(box).then(a2=>{ const go=()=>{ if(isFinite(a2.duration)&&a2.duration) a2.currentTime=e.target.value/1000*a2.duration; }; if(a2.readyState>=1) go(); else a2.addEventListener('loadedmetadata',go,{once:true}); }); });
 
+/* ---- напоминание «Пора позаниматься» (настраивает родитель) ---- */
+S.remind=S.remind||{on:false,hour:18};
+function remindCard(){
+  if(!S.user||S.adminToken) return '';
+  const r=S.remind, hrs=[];
+  for(let h=8;h<=21;h++) hrs.push(`<option value="${h}" ${r.hour===h?'selected':''}>${String(h).padStart(2,'0')}:00</option>`);
+  return `<div class="card sec"><h2>⏰ Напоминание о занятиях</h2><p class="muted" style="margin-bottom:10px">Раз в день придёт мягкое напоминание позаниматься 5 минут. Если ребёнок уже занимался в этот день, напоминание не придёт.</p>
+   <div class="row" style="display:flex;align-items:center;justify-content:space-between;gap:10px"><b style="font-size:14.5px">Напоминать каждый день</b><button class="sw" id="remOn" role="switch" aria-checked="${r.on}"></button></div>
+   <div style="display:flex;align-items:center;gap:10px;margin-top:10px;${r.on?'':'opacity:.5'}"><span class="muted" style="font-size:14px">в</span><select class="inp" id="remHour" style="width:auto;padding:9px 12px" ${r.on?'':'disabled'}>${hrs.join('')}</select><span class="muted" style="font-size:13px">по московскому времени</span></div>
+   ${r.on&&!S.pushOn&&!(window.Notification&&Notification.permission==='granted')?'<p class="muted" style="margin-top:10px;font-size:13px">⚠️ Чтобы напоминания приходили, включите уведомления ниже 👇</p>':''}</div>`;
+}
+async function remindSave(){ try{ await call('remindSet',{on:S.remind.on,hour:S.remind.hour,name:(S.user&&S.user.name)||''}); toast(S.remind.on?`Напомню в ${String(S.remind.hour).padStart(2,'0')}:00 💜`:'Напоминания выключены',IMG.c_happy); }catch(x){ toast(x.message,IMG.c_worry); } }
+document.addEventListener('click',e=>{ const b=e.target.closest('#remOn'); if(!b) return; S.remind.on=!S.remind.on; save(); render(); remindSave(); if(S.remind.on&&!S.pushOn&&!(window.Notification&&Notification.permission==='granted')) setTimeout(()=>enablePush(),400); });
+document.addEventListener('change',e=>{ if(e.target.id==='remHour'){ S.remind.hour=+e.target.value; save(); remindSave(); } });
+setTimeout(async()=>{ if(!S.user||S.adminToken) return; try{ const j=await call('remindGet',{}); if(j&&typeof j.on==='boolean'){ S.remind={on:j.on,hour:j.hour||18}; save(); if(tab==='me') render(); } }catch(e){} },1500);
+
+/* ---- прогресс клиента для Юли ---- */
+ADM.prog={};
+const _accLoad=accLoad;
+accLoad=async function(){ await _accLoad(); try{ ADM.prog=(await call('progressList')).map||{}; }catch(e){} };
+const agoTxt=iso=>{ if(!iso) return ''; const d=Math.floor((Date.now()-new Date(iso))/864e5); return d<=0?'сегодня':d===1?'вчера':d+' дн. назад'; };
+const _accRow=accRow;
+accRow=function(a){
+  let h=_accRow(a); const p=ADM.prog['u:'+a.login];
+  const tag=p?`<i class="tp">📈 ${agoTxt(p.last)} · ${p.days7} дн. за неделю</i>`:'<i class="tn">ещё не занимался</i>';
+  h=h.replace('<span class="atags">','<span class="atags">'+tag);
+  if(ADM.openAcc===a.login) h=h.replace('<div class="accb">',`<div class="accb"><button class="btn sm" data-aprog="${esc(a.login)}">📈 Прогресс</button>`);
+  return h;
+};
+const MOODN={happy:['Радуюсь','c_happy'],calm:['Спокоен','c_calm'],worry:['Волнуюсь','c_worry'],anx:['Тревожно','c_anx'],tired:['Устал','c_tired'],wait:['Жду','c_wait']};
+async function progSheet(login){
+  const a=ADM.acc.find(x=>x.login===login); const ov=document.createElement('div'); ov.className='ov';
+  ov.innerHTML=`<div class="sheet"><h2>${esc(a?a.name:login)}</h2><p class="muted" style="text-align:center">Загружаем прогресс…</p></div>`; document.body.appendChild(ov);
+  ov.addEventListener('click',e=>{ if(e.target===ov||e.target.closest('[data-close]')) ov.remove(); });
+  let ev=[]; try{ ev=(await call('progress',{id:'u:'+login})).events||[]; }catch(x){ ov.querySelector('.sheet').innerHTML=`<p class="err">${esc(x.message)}</p><button class="btn" data-close>Закрыть</button>`; return; }
+  const day=t=>new Date(t).toLocaleDateString('sv-SE'), days={}; ev.forEach(e=>days[day(e.t)]=(days[day(e.t)]||0)+1);
+  const strip=[]; for(let i=13;i>=0;i--){ const d=new Date(Date.now()-i*864e5), k=d.toLocaleDateString('sv-SE'); strip.push(`<span class="pd ${days[k]?'on':''}" title="${k}"><i></i>${d.toLocaleDateString('ru-RU',{weekday:'short'}).slice(0,2)}</span>`); }
+  const w7=Object.keys(days).filter(k=>new Date(k)>=new Date(Date.now()-7*864e5)).length;
+  const moods=ev.filter(e=>e.type==='mood').slice(-8).reverse();
+  const tests=ev.filter(e=>e.type==='test').slice(-10).reverse();
+  const secs={}; ev.filter(e=>e.type==='visit').forEach(e=>secs[e.sec]=(secs[e.sec]||0)+1);
+  const top=Object.entries(secs).sort((x,y)=>y[1]-x[1]).slice(0,6);
+  const diary=ev.filter(e=>e.sec==='Дневник'&&e.val).slice(-1)[0];
+  const fd=t=>new Date(t).toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
+  ov.querySelector('.sheet').innerHTML=`<h2>${esc(a?a.name:login)}</h2>
+   <div class="pstat"><div><b>${w7}</b><span>дней за неделю</span></div><div><b>${Object.keys(days).length}</b><span>дней за 2 месяца</span></div><div><b>${ev.length?agoTxt(ev[ev.length-1].t):'—'}</b><span>последний раз</span></div></div>
+   <h3 class="ph">Последние 2 недели</h3><div class="pstrip">${strip.join('')}</div>
+   ${moods.length?`<h3 class="ph">Настроение</h3><div class="pmood">${moods.map(m=>`<div>${m.val.split(',').map(k=>MOODN[k]?`<img src="${IMG[MOODN[k][1]]}" alt="${MOODN[k][0]}" title="${MOODN[k][0]}">`:'').join('')}<small>${fd(m.t)}</small></div>`).join('')}</div>`:''}
+   ${tests.length?`<h3 class="ph">Тесты</h3>${tests.map(t=>`<div class="ptest"><span>${esc(t.sec)}<small>${fd(t.t)}</small></span><b>${esc(t.val)}<small>/30</small></b></div>`).join('')}`:''}
+   ${top.length?`<h3 class="ph">Чем занимается</h3>${top.map(([k,n])=>`<div class="psec"><span>${esc(k)}</span><i style="width:${Math.max(8,n/top[0][1]*100)}%"></i><b>${n}</b></div>`).join('')}`:''}
+   ${diary?`<p class="muted" style="margin-top:10px">💜 Дневник: ${esc(diary.val)}</p>`:''}
+   ${!ev.length?'<p class="muted" style="text-align:center;margin:14px 0">Пока нет данных. Прогресс появится, когда клиент войдёт в приложение и начнёт заниматься.</p>':''}
+   <button class="btn" data-close style="margin-top:14px">Закрыть</button>`;
+}
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-aprog]'); if(b){ e.stopPropagation(); progSheet(b.dataset.aprog); } },true);
+
 setTimeout(()=>{ dmRefresh(); adminPoll(true); },800);
 render();
 
@@ -1072,6 +1152,9 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-theme-btn],[dat
 new MutationObserver(paintTheme).observe(document.body,{childList:true,subtree:true});
 paintTheme();
 </script>
+<script>(function(){var U="https://script.google.com/macros/s/AKfycbxch4npidJ9lL8j0YKJ2l5rzuM8jzuYiQjVphny9ZUitZN55yCWk6tI1I7EphRC5RLK/exec";var N={"index.html":"Главная","breathing.html":"Дыхание","speech.html":"Речевые упражнения","meditation.html":"Медитации","ladder.html":"Лестница смелости","tests.html":"Тесты","tales.html":"Сказки и мультики","artic.html":"Зарядка для язычка","games.html":"Игры","diary.html":"Дневник","club.html":"Клуб"};
+window.ytrack=function(type,sec,val){try{var st=JSON.parse(localStorage.getItem("yulia-app-v1")||"{}");if(!st.user||st.adminToken)return;var b=JSON.stringify({action:"track",device:localStorage.getItem("yulia-device")||"",utoken:st.userToken||"",name:st.user.name||"",type:type,section:sec,value:val==null?"":String(val)});fetch(U,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:b,keepalive:true}).catch(function(){});}catch(e){}};
+try{var f=(location.pathname.split("/").pop()||"index.html");if(f!=="index.html"&&N[f]){var k="yt-"+f,last=+localStorage.getItem(k)||0;if(Date.now()-last>1800000){localStorage.setItem(k,Date.now());var v="";if(f==="diary.html"){try{var d=JSON.parse(localStorage.getItem("yulia-diary-v1")||"{}");v="Сделано "+Object.keys(d.done||{}).length+" из 10";}catch(e){}}setTimeout(function(){ytrack("visit",N[f],v);},1500);}}}catch(e){}})();</script>
 <script>if("serviceWorker" in navigator)navigator.serviceWorker.register("OneSignalSDKWorker.js").catch(function(){});</script>
 </body>
 </html>

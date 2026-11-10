@@ -227,7 +227,7 @@ function renderQ(){
 }
 function answer(v){ A[i]=v; document.querySelectorAll('.an').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===v)); setTimeout(()=>{ if(i<T.q.length-1){i++;renderQ();} else finish(); },260); }
 function finish(){
-  const s=A.reduce((a,b)=>a+b,0); (H[tid]=H[tid]||[]).push({d:Date.now(),s}); H[tid]=H[tid].slice(-20); saveH();
+  const s=A.reduce((a,b)=>a+b,0); (H[tid]=H[tid]||[]).push({d:Date.now(),s}); H[tid]=H[tid].slice(-20); saveH(); if(window.ytrack) ytrack('test',T.t,s);
   const b=T.bands.find(x=>s<=x[0]);
   $('#rtitle').textContent=T.t; $('#score').innerHTML=`${s}<small> / 30</small>`; $('#band').textContent=b[1]; $('#rtext').textContent=b[2];
   $('#garc').style.strokeDashoffset=283; setTimeout(()=>$('#garc').style.strokeDashoffset=283*(1-s/30),60);
@@ -266,6 +266,9 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-theme-btn],[dat
 new MutationObserver(paintTheme).observe(document.body,{childList:true,subtree:true});
 paintTheme();
 </script>
+<script>(function(){var U="https://script.google.com/macros/s/AKfycbxch4npidJ9lL8j0YKJ2l5rzuM8jzuYiQjVphny9ZUitZN55yCWk6tI1I7EphRC5RLK/exec";var N={"index.html":"Главная","breathing.html":"Дыхание","speech.html":"Речевые упражнения","meditation.html":"Медитации","ladder.html":"Лестница смелости","tests.html":"Тесты","tales.html":"Сказки и мультики","artic.html":"Зарядка для язычка","games.html":"Игры","diary.html":"Дневник","club.html":"Клуб"};
+window.ytrack=function(type,sec,val){try{var st=JSON.parse(localStorage.getItem("yulia-app-v1")||"{}");if(!st.user||st.adminToken)return;var b=JSON.stringify({action:"track",device:localStorage.getItem("yulia-device")||"",utoken:st.userToken||"",name:st.user.name||"",type:type,section:sec,value:val==null?"":String(val)});fetch(U,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:b,keepalive:true}).catch(function(){});}catch(e){}};
+try{var f=(location.pathname.split("/").pop()||"index.html");if(f!=="index.html"&&N[f]){var k="yt-"+f,last=+localStorage.getItem(k)||0;if(Date.now()-last>1800000){localStorage.setItem(k,Date.now());var v="";if(f==="diary.html"){try{var d=JSON.parse(localStorage.getItem("yulia-diary-v1")||"{}");v="Сделано "+Object.keys(d.done||{}).length+" из 10";}catch(e){}}setTimeout(function(){ytrack("visit",N[f],v);},1500);}}}catch(e){}})();</script>
 <script>if("serviceWorker" in navigator)navigator.serviceWorker.register("OneSignalSDKWorker.js").catch(function(){});</script>
 </body>
 </html>
